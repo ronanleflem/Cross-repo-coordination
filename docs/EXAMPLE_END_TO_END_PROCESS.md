@@ -1,77 +1,167 @@
 # Exemple De Processus De Bout En Bout (Cross-Repo)
 
-Cet exemple montre exactement quoi faire et ce qui est genere automatiquement.
+Ce document decrit le flux complet, avec:
+- quoi lancer
+- ou lancer (cross-repo ou repo de travail)
+- ce qui est genere automatiquement
+- quand valider manuellement
 
-## Exemple de feature
-- Demande: "Ajouter un score de risque global visible dans Angular, calcule dans Python, expose par Spring."
+## Pre-requis
+- Repo cross-repo: `C:\Users\ronan\Desktop\Cross-repo-coordination\Cross-repo-coordination`
+- Repo Angular: `C:\Users\ronan\Desktop\Angular-Front-Financial\Angular-Financial-Project`
+- Repo Spring: `C:\Users\ronan\Desktop\Projet Finance\spring\Financial-Project`
+- Repo Python: `C:\Users\ronan\Desktop\Quant-Engine-Python\Quant-Python-Engine`
 
-## Deux points d'entree valides
+## Feature fictive
+- "Strategy launcher: afficher Not implemented yet pour options non supportees"
 
-### Option A - Script d'abord (recommande)
-1. Executer:
+## Step 0 (optionnel) - Bootstrap automatique
+Where to run: CROSS-REPO
+
 ```powershell
-./scripts/bootstrap-initiative.ps1 -InitId "INIT-002" -Slug "global-risk-score" -Title "Add global risk score" -CreateLocalTicketStubs
+./scripts/bootstrap-initiative.ps1 -InitId "INIT-002" -Slug "strategy-launcher-backtest-not-implemented" -Title "Strategy launcher backtest not implemented" -CreateLocalTicketStubs
 ```
 
-2. Sorties automatiques:
-- `initiatives/INIT-002-global-risk-score.md`
-- `context-packs/CP-002-global-risk-score.md`
-- `initiatives/index.md` mis a jour
-- stubs de tickets locaux:
-  - Angular: `C:\Users\ronan\Desktop\Angular-Front-Financial\Angular-Financial-Project\tickets\active\INIT-002-angular-global-risk-score.md`
-  - Spring: `C:\Users\ronan\Desktop\Projet Finance\spring\Financial-Project\tickets\active\INIT-002-spring-global-risk-score.md`
-  - Python: `C:\Users\ronan\Desktop\Quant-Engine-Python\Quant-Python-Engine\tickets\active\INIT-002-python-global-risk-score.md`
+Ce que ca genere automatiquement:
+- `initiatives/INIT-002-strategy-launcher-backtest-not-implemented.md`
+- `context-packs/CP-002-strategy-launcher-backtest-not-implemented.md`
+- mise a jour `initiatives/index.md`
+- stubs tickets locaux (Angular/Spring/Python)
 
-3. Ensuite demander a l'orchestrateur de continuer avec:
-- `docs/PROMPT_ORCHESTRATE_FEATURE.md`
+Note:
+- Cette etape est optionnelle.
+- Si tu ne la fais pas, Step 1 peut creer/mettre a jour les memes artefacts.
 
-### Option B - Prompt d'abord
-1. Demander:
-- "Utilise `docs/PROMPT_ORCHESTRATE_FEATURE.md` pour la feature: Add global risk score"
+## Step 1 - Generation coordonnee des tickets (PM)
+Where to run: CROSS-REPO
+Prompt source: `docs/PROMPT_ORCHESTRATE_FEATURE.md`
 
-2. Actions attendues de l'orchestrateur:
-- creer/mettre a jour `INIT-002` et `CP-002`
-- creer ou affiner les tickets locaux dans chaque repo impacte
-- renseigner les dependances et la version du contrat
+Exemple de prompt:
+```txt
+Applique docs/PROMPT_ORCHESTRATE_FEATURE.md.
 
-## Sequence BMAD par ticket local
-Pour chaque ticket local au repo:
-1. Stage PM (workflow `tech-spec` ou `prd` selon la taille)
-2. Stage Architect (workflow `architecture`)
-3. Stage Dev (workflow `dev-story`)
-4. Stage Reviewer (workflow `code-review`)
+Input type: JIRA
+Feature: "Strategy launcher backtest not implemented"
 
-## Utilisation de Context7
-Utiliser uniquement si necessaire:
-- comportement d'une API/lib externe inconnu
-- detail d'implementation sensible a la version
-- documentation manquante ou contradictoire
-
-Sinon definir:
-- `Context7 Decision: Required = No`
-
-## Ce que tu declenches manuellement vs automatiquement
-
-Manuel:
-1. Lancer le script bootstrap OU appeler le prompt d'orchestration.
-2. Confirmer les choix produit et les priorites.
-3. Demander l'implementation/la review quand c'est pret.
-
-Automatique (par script/orchestrateur):
-1. Creation des fichiers initiative/context pack.
-2. Generation ou mise a jour des tickets locaux.
-3. Remplissage et maintien des liens/dependances cross-repo.
-4. Suivi de la progression BMAD dans les artefacts.
-
-## Commandes minimales operateur
-```powershell
-# 1) Bootstrap
-./scripts/bootstrap-initiative.ps1 -InitId "INIT-002" -Slug "global-risk-score" -Title "Add global risk score" -CreateLocalTicketStubs
-
-# 2) Demander a l'orchestrateur
-# "Applique docs/PROMPT_ORCHESTRATE_FEATURE.md pour INIT-002"
-
-# 3) Suivre l'avancement
-Get-Content initiatives/INIT-002-global-risk-score.md
-Get-Content context-packs/CP-002-global-risk-score.md
+Actions attendues:
+1) Creer/mettre a jour INIT-002 et CP-002
+2) Generer les 3 tickets locaux (Angular, Spring, Python)
+3) Fixer BMAD Stage = PM dans chaque ticket
+4) Renseigner Cross-Repo Initiative, Upstream Dependencies, Contract Version, Context7 Decision
+5) Stopper et me demander validation
 ```
+
+Ce qui est automatique a Step 1:
+- generation/maj INIT + CP
+- generation/maj tickets locaux
+- verification metadata si demandee
+
+Ce que tu dois faire ensuite:
+- valider artefacts (INIT, CP, tickets) avant Architect
+
+## Step 2 - Validation manuelle avant Architect
+Where to run: CROSS-REPO
+
+Exemple de prompt:
+```txt
+Pour INIT-002, fais une revue de coherence de INIT + CP + 3 tickets locaux.
+Donne les incoherences, dependances manquantes et ordre d execution final.
+Ne code rien.
+```
+
+Commande utile:
+```powershell
+./scripts/validate-ticket-metadata.ps1 -InitId "INIT-002"
+```
+
+Decision humaine attendue:
+- "Valide pour passage en phase Architect"
+
+## Step 3 - Architect (sans code)
+Where to run: EACH WORK REPO
+Ordre recommande: Spring -> Python -> Angular
+
+### 3A - Spring
+Where: SPRING repo
+```txt
+Sur le ticket local INIT-002-spring-..., execute la phase Architect.
+Objectif: figer endpoint/contrat et politique champs non supportes.
+Ne code pas.
+```
+
+### 3B - Python
+Where: PYTHON repo
+```txt
+Sur le ticket local INIT-002-python-..., execute la phase Architect.
+Objectif: matrice supporte/non supporte + signalisation.
+Ne code pas.
+```
+
+### 3C - Angular
+Where: ANGULAR repo
+```txt
+Sur le ticket local INIT-002-angular-..., execute la phase Architect.
+Objectif: alignement UX/message avec contrat backend.
+Ne code pas.
+```
+
+Ce que tu dois faire ensuite:
+- retourner dans le cross-repo pour consolider les decisions Architect
+
+## Step 4 - Consolidation Architect (cross-repo)
+Where to run: CROSS-REPO
+
+Exemple de prompt:
+```txt
+Pour INIT-002, consolide les decisions Architect des 3 repos dans INIT + CP.
+Mets a jour dependances, contrat/version et ordre final d execution.
+Ne code pas.
+```
+
+Decision humaine attendue:
+- "Valide pour passage en phase Dev"
+
+## Step 5 - Dev (code)
+Where to run: EACH WORK REPO
+Ordre recommande: Spring -> Python -> Angular
+
+Exemple de prompt (a adapter au repo):
+```txt
+Sur le ticket local INIT-002-<repo>-..., execute la phase Dev.
+- respecter strictement le scope local
+- Context7 seulement si Required=Yes
+- produire changements + tests + resume validation
+Puis passer le ticket en Review-ready.
+```
+
+## Step 6 - Reviewer (gate)
+Where to run: EACH WORK REPO
+
+Exemple de prompt:
+```txt
+Lance le review gate BMAD (code-review) pour le ticket <TICKET-ID>.
+Je veux findings critiques/non critiques + decision finale.
+```
+
+Si corrections:
+- repasser en Dev sur le meme repo
+- relancer Reviewer
+
+## Step 7 - Cloture initiative
+Where to run: CROSS-REPO
+
+Exemple de prompt:
+```txt
+Mets a jour INIT-002 avec:
+- statuts tickets locaux
+- liens PR
+- dependances restantes
+
+Si tout est vert (tickets done + PR merge + contrat aligne), passe INIT-002 en Done.
+Sinon laisse Active avec blockers explicites.
+```
+
+## Resume: qui declenche quoi
+- Toi (manuel): lancement step 0/1, validations intermediaires, go/no-go Architect et Dev.
+- Orchestrateur (automatique quand demande): creation/maj INIT+CP+tickets et coherence metadata.
+- Agents code (manuel par repo): Architect, Dev, Reviewer en local.

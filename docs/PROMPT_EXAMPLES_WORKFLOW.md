@@ -155,9 +155,92 @@ Je veux:
 4) liste exacte des corrections a faire
 ```
 
+Copy/paste version (recommended):
+```txt
+Lance le review gate BMAD (code-review) pour le ticket <TICKET-ID>.
+
+Contexte:
+- Initiative: <INIT-XXX>
+- Repo: <Angular|Spring|Python>
+
+Je veux:
+1) findings critiques
+2) findings non critiques
+3) decision: Approved / Changes required
+4) corrections exactes a faire
+```
+
+Second review (pass 2+) template:
+```txt
+Lance le review gate BMAD (code-review) pour le ticket <TICKET-ID>.
+
+Contexte:
+- Initiative: <INIT-XXX>
+- Repo: <Angular|Spring|Python>
+- Review pass: 2
+- Source review precedente: <lien ou resume findings>
+- Fixes appliques: <liste courte>
+
+Je veux:
+1) findings restants
+2) decision: Approved / Changes required
+3) corrections exactes s'il en reste
+```
+
+If decision is `Changes required`:
+1. Go back to Step 3 (Dev) in the same repo.
+2. Apply fixes.
+3. Re-run Step 4 in the same repo.
+
+Prompt to apply review fixes (copy/paste):
+```txt
+Sur le ticket <TICKET-ID>, applique les corrections demandees par le review gate.
+
+Contexte:
+- Initiative: <INIT-XXX>
+- Repo: <Angular|Spring|Python>
+- Source review: <lien ou resume findings>
+
+Regles:
+- stage BMAD: Dev
+- corriger uniquement les points demandes (pas de refactor hors scope)
+- conserver les conventions du ticket
+- relancer les tests/validations touches
+
+Sortie attendue:
+1) liste des corrections appliquees
+2) commandes de validation executees + resultats
+3) ticket repasse en Review-ready
+```
+
 ---
 
-## Step 5 - Update coordination and close
+## Step 5 - Close local tickets
+Where to run: EACH WORK REPO
+
+Prompt template:
+```txt
+Cloture le ticket <TICKET-ID>.
+
+Preconditions:
+- review gate = Approved
+- validations/tests du ticket passent
+
+Actions attendues:
+1) mettre a jour le ticket en status Done
+2) verifier que DoD est complet
+3) ajouter un court resume final (changements + validations)
+4) lister les risques residuels (si aucun, l'indiquer)
+```
+
+Recommended order:
+1) Spring local ticket
+2) Python local ticket
+3) Angular local ticket
+
+---
+
+## Step 6 - Update coordination and close INIT
 Where to run: CROSS-REPO
 
 Prompt template:
@@ -174,7 +257,7 @@ Sinon laisse en Active avec blockers explicites.
 
 ---
 
-## Step 6 - EIC-specific generation (when contract already exists)
+## Step 7 - EIC-specific generation (when contract already exists)
 Where to run: CROSS-REPO first, then each impacted WORK REPO
 
 Cross-repo prompt:
