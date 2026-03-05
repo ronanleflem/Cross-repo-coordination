@@ -32,14 +32,35 @@
 - Spring: `C:\Users\ronan\Desktop\Projet Finance\spring\Financial-Project\tickets\active\INIT-003-spring-decommission-ta4j-computation-to-python.md`
 - Python: `C:\Users\ronan\Desktop\Quant-Engine-Python\Quant-Python-Engine\tickets\active\INIT-003-python-decommission-ta4j-computation-to-python.md`
 
+## Generated sub-tickets (PM)
+- Spring:
+  - `C:\Users\ronan\Desktop\Projet Finance\spring\Financial-Project\tickets\active\INIT-003-spring-canonical-runs-contract-guardrails.md`
+  - `C:\Users\ronan\Desktop\Projet Finance\spring\Financial-Project\tickets\active\INIT-003-spring-cutover-legacy-backtest-routing.md`
+  - `C:\Users\ronan\Desktop\Projet Finance\spring\Financial-Project\tickets\active\INIT-003-spring-retire-ta4j-legacy-stack.md`
+- Python:
+  - `C:\Users\ronan\Desktop\Quant-Engine-Python\Quant-Python-Engine\tickets\active\INIT-003-python-backtest-signal-parity-expansion.md`
+  - `C:\Users\ronan\Desktop\Quant-Engine-Python\Quant-Python-Engine\tickets\active\INIT-003-python-dca-grid-preset-parity.md`
+- Angular:
+  - `C:\Users\ronan\Desktop\Angular-Front-Financial\Angular-Financial-Project\tickets\active\INIT-003-angular-capability-driven-option-gating.md`
+  - `C:\Users\ronan\Desktop\Angular-Front-Financial\Angular-Financial-Project\tickets\active\INIT-003-angular-contract-aware-error-mapping-shared.md`
+  - `C:\Users\ronan\Desktop\Angular-Front-Financial\Angular-Financial-Project\tickets\active\INIT-003-angular-runs-cross-page-regression-tests.md`
+
 ## Dependency graph
 - blocked_by:
-- Finalisation de la matrice canonique `legacy_java_capability -> python_capability` (owner: Python).
-- Validation Architect du contrat transport Spring (owner: Spring).
+- INIT-003-spring-canonical-runs-contract-guardrails (must complete first).
+- INIT-003-python-backtest-signal-parity-expansion et INIT-003-python-dca-grid-preset-parity (required before routing cutover finalisation).
 - unblocks:
 - INIT futur de migration implementable (Architect/Dev) pour suppression progressive ta4j cote Java.
 - Alignement durable du contrat Spring <-> Python pour strategies/filtres.
 - Rationalisation des options Angular afin de n'exposer que les capacites reelles.
+
+Detailed sequence dependencies:
+1. `INIT-003-spring-canonical-runs-contract-guardrails`
+2. `INIT-003-python-backtest-signal-parity-expansion` + `INIT-003-python-dca-grid-preset-parity`
+3. `INIT-003-spring-cutover-legacy-backtest-routing`
+4. `INIT-003-angular-capability-driven-option-gating` + `INIT-003-angular-contract-aware-error-mapping-shared`
+5. `INIT-003-angular-runs-cross-page-regression-tests`
+6. `INIT-003-spring-retire-ta4j-legacy-stack`
 
 ## Contract/version references
 - API/DTO contract:
@@ -89,17 +110,24 @@
   - Downstream: None
 
 ## Final execution order
-1. Spring Architect/Dev: verrouiller contrat transport et inventaire points ta4j.
-2. Python Architect/Dev: produire parite capability et combler gaps prioritaires.
-3. Angular Architect/Dev: nettoyer options UI et mapping erreurs/capabilities.
-4. Reviewer gates: Spring + Python, puis Angular, puis consolidation cross-repo.
+1. Spring - `INIT-003-spring-canonical-runs-contract-guardrails`
+2. Python - `INIT-003-python-backtest-signal-parity-expansion`
+3. Python - `INIT-003-python-dca-grid-preset-parity`
+4. Spring - `INIT-003-spring-cutover-legacy-backtest-routing`
+5. Angular - `INIT-003-angular-capability-driven-option-gating`
+6. Angular - `INIT-003-angular-contract-aware-error-mapping-shared`
+7. Angular - `INIT-003-angular-runs-cross-page-regression-tests`
+8. Spring - `INIT-003-spring-retire-ta4j-legacy-stack`
+9. Reviewer gates par sous-ticket puis consolidation cross-repo finale
 
 ## Acceptance criteria
 - [x] 1 ticket local PM genere pour Angular, Spring, Python.
 - [x] Chaque ticket contient `Cross-Repo Initiative`, `Upstream Dependencies`, `Contract Version`, `Context7 Decision`.
 - [x] `INIT-003` et `CP-003` sont crees et relies.
 - [x] Le sequencing initial cross-repo est defini.
+- [x] Sous-tickets de follow-up generes a partir des audits (Spring/Python/Angular).
 - [ ] Les 3 tickets locaux sont en Done apres phases Architect/Dev/Reviewer.
+- [ ] Tous les sous-tickets INIT-003 sont en Done apres phases Architect/Dev/Reviewer.
 - [ ] Les PR de migration/decommission sont merges.
 - [ ] Les contrats sont alignes apres execution.
 

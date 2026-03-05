@@ -109,8 +109,36 @@
   - Matrice canonique legacy->python non finalisee.
   - Validation finale du schema d'erreur/capabilities a figer en Architect.
 
+## Generated sub-ticket backlog (from audit expansion)
+- Spring
+  - `INIT-003-spring-canonical-runs-contract-guardrails`
+  - `INIT-003-spring-cutover-legacy-backtest-routing`
+  - `INIT-003-spring-retire-ta4j-legacy-stack`
+- Python
+  - `INIT-003-python-backtest-signal-parity-expansion`
+  - `INIT-003-python-dca-grid-preset-parity`
+- Angular
+  - `INIT-003-angular-capability-driven-option-gating`
+  - `INIT-003-angular-contract-aware-error-mapping-shared`
+  - `INIT-003-angular-runs-cross-page-regression-tests`
+
+## Sub-ticket dependencies (expanded)
+1. `INIT-003-spring-canonical-runs-contract-guardrails` -> base contract.
+2. `INIT-003-python-backtest-signal-parity-expansion` depends on spring guardrails.
+3. `INIT-003-python-dca-grid-preset-parity` depends on spring guardrails.
+4. `INIT-003-spring-cutover-legacy-backtest-routing` depends on spring guardrails + python parity tickets.
+5. `INIT-003-angular-capability-driven-option-gating` depends on spring cutover + python parity tickets.
+6. `INIT-003-angular-contract-aware-error-mapping-shared` depends on spring cutover + python signal parity.
+7. `INIT-003-angular-runs-cross-page-regression-tests` depends on angular gating + angular mapping + spring cutover.
+8. `INIT-003-spring-retire-ta4j-legacy-stack` depends on spring cutover + angular regression validation.
+
 ## Suggested execution order (final)
-1. Spring Architect/Dev: guardrails contrat + inventaire decommission ta4j.
-2. Python Architect/Dev: matrice de parite + fermeture des gaps prioritaires.
-3. Angular Architect/Dev: alignement UI et suppression progressive des options non supportees.
-4. Reviewer gates: Spring/Python, puis Angular, puis consolidation finale INIT.
+1. Spring - contract guardrails.
+2. Python - backtest signal parity.
+3. Python - DCA grid preset parity.
+4. Spring - legacy routing cutover.
+5. Angular - capability-driven option gating.
+6. Angular - shared contract-aware error mapping.
+7. Angular - cross-page regression tests.
+8. Spring - retire ta4j legacy stack.
+9. Reviewer gates per sub-ticket + cross-repo consolidation.
