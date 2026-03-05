@@ -3,6 +3,11 @@
 ## Scope
 This runbook is the single operational entry point for any new feature.
 
+## Mandatory gate policy
+- Blocking checks are defined in `docs/BLOCKING_GATES.md`.
+- Gate validation prompt: `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`.
+- Rule: `NO-GO` means stop immediately and fix artifacts before continuing.
+
 ## Precedence
 1. Cross-repo orchestration first
 2. Local JIRA or EIC ticket generation second
@@ -54,6 +59,14 @@ Run:
 ./scripts/validate-ticket-metadata.ps1
 ```
 
+## Step 5.5 - Gate A (Pre-Architect) - mandatory
+Run cross-repo validation prompt:
+
+- `docs/PROMPT_VALIDATE_BLOCKING_GATES.md` with `Gate = Pre-Architect`
+
+Rule:
+- Do not start Architect in work repos if Gate A is `NO-GO`.
+
 ## Step 6 - Expand audits into sub-tickets (optional but recommended for decommission work)
 When local tickets are audit-heavy and validated, run cross-repo prompt:
 
@@ -67,6 +80,14 @@ Rule:
 - Do not start Dev on broad audit tickets when follow-up implementation tickets are expected.
 - First generate and approve sub-tickets, then run BMAD Architect -> Dev -> Reviewer on those sub-tickets.
 
+## Step 6.5 - Gate B (Pre-Dev) - mandatory
+Run cross-repo validation prompt:
+
+- `docs/PROMPT_VALIDATE_BLOCKING_GATES.md` with `Gate = Pre-Dev`
+
+Rule:
+- Do not start Dev in any repo if Gate B is `NO-GO`.
+
 ## Step 7 - Coordination closure
 Update `INIT-xxx`:
 - local ticket links
@@ -74,3 +95,11 @@ Update `INIT-xxx`:
 - dependency status
 
 Mark initiative `Done` only when all linked tickets are done and contracts are aligned.
+
+## Step 7.5 - Gate C (Pre-Close) - mandatory
+Run cross-repo validation prompt:
+
+- `docs/PROMPT_VALIDATE_BLOCKING_GATES.md` with `Gate = Pre-Close`
+
+Rule:
+- Do not close INIT if Gate C is `NO-GO`.

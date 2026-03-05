@@ -71,6 +71,29 @@ Optional command:
 
 ---
 
+## Step 2.2 - Gate A (Pre-Architect) mandatory
+Where to run: CROSS-REPO
+File used: docs/PROMPT_VALIDATE_BLOCKING_GATES.md
+
+Prompt template:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Architect
+Initiative: INIT-<XXX>
+
+Je veux:
+1) decision GO/NO-GO
+2) checks passes
+3) checks en echec + corrections exactes
+4) prochaine action autorisee
+```
+
+Rule:
+- If `NO-GO`, stop and fix artifacts before Architect.
+
+---
+
 ## Step 2.5 - Expand audit tickets into implementation sub-tickets
 Where to run: CROSS-REPO
 File used: docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md
@@ -89,6 +112,29 @@ Actions attendues:
 5) Mettre a jour INIT + CP (liste sous-tickets + dependency graph + ordre final)
 6) Stopper et me demander validation avant Dev
 ```
+
+---
+
+## Step 2.8 - Gate B (Pre-Dev) mandatory
+Where to run: CROSS-REPO
+File used: docs/PROMPT_VALIDATE_BLOCKING_GATES.md
+
+Prompt template:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Dev
+Initiative: INIT-<XXX>
+
+Je veux:
+1) decision GO/NO-GO
+2) checks passes
+3) checks en echec + corrections exactes
+4) prochaine action autorisee
+```
+
+Rule:
+- If `NO-GO`, stop and fix planning artifacts before Dev.
 
 ---
 
@@ -275,6 +321,29 @@ Mets a jour INIT-<XXX> et CP-<XXX> avec:
 Si tout est vert (tickets done + PR merge + contrats alignes), passe INIT-<XXX> a Done.
 Sinon laisse en Active avec blockers explicites.
 ```
+
+---
+
+## Step 6.5 - Gate C (Pre-Close) mandatory
+Where to run: CROSS-REPO
+File used: docs/PROMPT_VALIDATE_BLOCKING_GATES.md
+
+Prompt template:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Close
+Initiative: INIT-<XXX>
+
+Je veux:
+1) decision GO/NO-GO
+2) checks passes
+3) checks en echec + corrections exactes
+4) prochaine action autorisee
+```
+
+Rule:
+- If `NO-GO`, keep INIT Active.
 
 ---
 

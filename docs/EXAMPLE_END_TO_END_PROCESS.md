@@ -77,6 +77,53 @@ Commande utile:
 Decision humaine attendue:
 - "Valide pour passage en phase Architect"
 
+## Step 2.5 - Gate A (Pre-Architect) obligatoire
+Where to run: CROSS-REPO
+Prompt source: `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`
+
+Exemple de prompt:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Architect
+Initiative: INIT-002
+
+Je veux:
+1) decision GO ou NO-GO
+2) checks passes
+3) checks en echec avec corrections exactes
+4) prochaine action autorisee
+```
+
+Regle:
+- Si `NO-GO`, ne pas lancer Architect.
+
+Template de correction si `NO-GO`:
+```txt
+Gate precedent: Pre-Architect
+Resultat: NO-GO
+Initiative: INIT-002
+
+Corrige uniquement les points NO-GO suivants:
+- <point 1>
+- <point 2>
+- <point 3>
+
+Actions attendues:
+1) Mettre a jour INIT/CP/tickets impactes
+2) Ne rien changer hors scope des erreurs NO-GO
+3) Donner la liste exacte des fichiers modifies
+4) Stopper et me demander de relancer la gate
+```
+
+Puis relance gate:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Architect
+Initiative: INIT-002
+```
+
 ## Step 3 - Architect (sans code)
 Where to run: EACH WORK REPO
 Ordre recommande: Spring -> Python -> Angular
@@ -149,6 +196,53 @@ Ce que ca change:
 - Le Dev se fait sur des sous-tickets dedies, pas sur le ticket audit large
 - Les dependances sont plus fines et reviewables
 
+## Step 4.8 - Gate B (Pre-Dev) obligatoire
+Where to run: CROSS-REPO
+Prompt source: `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`
+
+Exemple de prompt:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Dev
+Initiative: INIT-002
+
+Je veux:
+1) decision GO ou NO-GO
+2) checks passes
+3) checks en echec avec corrections exactes
+4) prochaine action autorisee
+```
+
+Regle:
+- Si `NO-GO`, ne pas lancer Dev.
+
+Template de correction si `NO-GO`:
+```txt
+Gate precedent: Pre-Dev
+Resultat: NO-GO
+Initiative: INIT-002
+
+Corrige uniquement les points NO-GO suivants:
+- <point 1>
+- <point 2>
+- <point 3>
+
+Actions attendues:
+1) Mettre a jour INIT/CP/tickets impactes
+2) Ne rien changer hors scope des erreurs NO-GO
+3) Donner la liste exacte des fichiers modifies
+4) Stopper et me demander de relancer la gate
+```
+
+Puis relance gate:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Dev
+Initiative: INIT-002
+```
+
 ## Step 5 - Dev (code)
 Where to run: EACH WORK REPO
 Ordre recommande: Spring -> Python -> Angular
@@ -187,6 +281,53 @@ Mets a jour INIT-002 avec:
 
 Si tout est vert (tickets done + PR merge + contrat aligne), passe INIT-002 en Done.
 Sinon laisse Active avec blockers explicites.
+```
+
+## Step 7.5 - Gate C (Pre-Close) obligatoire
+Where to run: CROSS-REPO
+Prompt source: `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`
+
+Exemple de prompt:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Close
+Initiative: INIT-002
+
+Je veux:
+1) decision GO ou NO-GO
+2) checks passes
+3) checks en echec avec corrections exactes
+4) prochaine action autorisee
+```
+
+Regle:
+- Si `NO-GO`, ne pas cloturer INIT.
+
+Template de correction si `NO-GO`:
+```txt
+Gate precedent: Pre-Close
+Resultat: NO-GO
+Initiative: INIT-002
+
+Corrige uniquement les points NO-GO suivants:
+- <point 1>
+- <point 2>
+- <point 3>
+
+Actions attendues:
+1) Mettre a jour INIT/CP/tickets impactes
+2) Ne rien changer hors scope des erreurs NO-GO
+3) Donner la liste exacte des fichiers modifies
+4) Stopper et me demander de relancer la gate
+```
+
+Puis relance gate:
+```txt
+Applique docs/PROMPT_VALIDATE_BLOCKING_GATES.md.
+
+Gate: Pre-Close
+Initiative: INIT-002
 ```
 
 ## Resume: qui declenche quoi

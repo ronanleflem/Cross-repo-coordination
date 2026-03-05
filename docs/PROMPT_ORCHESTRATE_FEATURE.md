@@ -28,6 +28,7 @@ Hard requirements (MUST):
 10. Keep Context7 disabled unless uncertainty criteria are met.
 11. Update initiative links and dependency graph.
 12. Stop after initial local ticket generation unless user explicitly asks to continue.
+13. Before Architect phase, enforce Gate A via `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`.
 
 Strict boundaries:
 - EIC files are local contract-to-ticket translators only.
@@ -39,3 +40,4 @@ Deliverables:
 - Updated context pack
 - List of local ticket file paths
 - Open risks and blocking dependencies
+- Gate recommendation: run `Pre-Architect` validation and return GO/NO-GO

@@ -12,6 +12,11 @@ This file defines which markdown files must be triggered for each input type.
 - Scope: cross-repo expansion of audit findings into implementation sub-tickets
 - Outputs: updated `INIT`, updated `CP`, generated sub-ticket paths, refined dependency graph
 
+## Blocking gate validation entry point (mandatory)
+- Trigger: `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`
+- Scope: cross-repo GO/NO-GO decision before Architect, before Dev, before close
+- Outputs: gate decision, failed checks, exact remediation actions
+
 ## Input type mapping
 
 ### Case A: vague idea / jira-like sentence

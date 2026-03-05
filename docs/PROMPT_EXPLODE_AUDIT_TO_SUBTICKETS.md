@@ -24,6 +24,7 @@ Hard requirements (MUST):
    - dependency graph updates
    - final execution order
 12. Do not duplicate full ticket bodies across repos.
+13. Before any Dev execution, enforce Gate B via `docs/PROMPT_VALIDATE_BLOCKING_GATES.md`.
 
 Sub-ticket naming convention:
 - Angular: `INIT-xxx-angular-<short-scope>.md`
@@ -40,3 +41,4 @@ Deliverables:
 - Updated context pack
 - List of generated sub-ticket file paths
 - Open risks and blocking dependencies after expansion
+- Gate recommendation: run `Pre-Dev` validation and return GO/NO-GO
