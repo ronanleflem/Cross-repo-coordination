@@ -6,7 +6,8 @@ This runbook is the single operational entry point for any new feature.
 ## Precedence
 1. Cross-repo orchestration first
 2. Local JIRA or EIC ticket generation second
-3. Local implementation last
+3. Audit expansion into sub-tickets third (if audit flow is used)
+4. Local implementation last
 
 ## Inputs required
 - Feature title and objective
@@ -53,7 +54,20 @@ Run:
 ./scripts/validate-ticket-metadata.ps1
 ```
 
-## Step 6 - Coordination closure
+## Step 6 - Expand audits into sub-tickets (optional but recommended for decommission work)
+When local tickets are audit-heavy and validated, run cross-repo prompt:
+
+- `docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md`
+
+Expected outputs:
+- Multiple concrete sub-tickets in impacted repos (`tickets/active/*.md`)
+- Updated `INIT-xxx` and `CP-xxx` with dependency graph and execution order
+
+Rule:
+- Do not start Dev on broad audit tickets when follow-up implementation tickets are expected.
+- First generate and approve sub-tickets, then run BMAD Architect -> Dev -> Reviewer on those sub-tickets.
+
+## Step 7 - Coordination closure
 Update `INIT-xxx`:
 - local ticket links
 - PR links

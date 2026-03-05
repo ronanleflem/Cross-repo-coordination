@@ -84,7 +84,7 @@ Ordre recommande: Spring -> Python -> Angular
 ### 3A - Spring
 Where: SPRING repo
 ```txt
-Sur le ticket local INIT-002-spring-..., execute la phase Architect.
+Sur le ticket local INIT-003, execute la phase Architect.
 Objectif: figer endpoint/contrat et politique champs non supportes.
 Ne code pas.
 ```
@@ -92,7 +92,7 @@ Ne code pas.
 ### 3B - Python
 Where: PYTHON repo
 ```txt
-Sur le ticket local INIT-002-python-..., execute la phase Architect.
+Sur le ticket local INIT-003, execute la phase Architect.
 Objectif: matrice supporte/non supporte + signalisation.
 Ne code pas.
 ```
@@ -100,7 +100,7 @@ Ne code pas.
 ### 3C - Angular
 Where: ANGULAR repo
 ```txt
-Sur le ticket local INIT-002-angular-..., execute la phase Architect.
+Sur le ticket local INIT-003, execute la phase Architect.
 Objectif: alignement UX/message avec contrat backend.
 Ne code pas.
 ```
@@ -121,13 +121,41 @@ Ne code pas.
 Decision humaine attendue:
 - "Valide pour passage en phase Dev"
 
+## Step 4.5 - Expansion audit en sous-tickets (recommande)
+Where to run: CROSS-REPO
+Prompt source: `docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md`
+
+Exemple de prompt:
+```txt
+Applique docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md.
+
+Initiative: INIT-002
+Source tickets audit:
+- Angular: INIT-002-angular-...
+- Spring: INIT-002-spring-...
+- Python: INIT-002-python-...
+
+Actions attendues:
+1) Lire INIT + CP + 3 tickets audit
+2) Generer les sous-tickets concrets dans les repos impactes
+3) Fixer BMAD Stage = PM sur chaque sous-ticket
+4) Renseigner Cross-Repo Initiative, Upstream Dependencies, Contract Version, Context7 Decision
+5) Mettre a jour INIT + CP avec la liste des sous-tickets et l'ordre final d'execution
+6) Stopper et me demander validation avant Dev
+```
+
+Ce que ca change:
+- Les tickets audit restent des tickets de cadrage
+- Le Dev se fait sur des sous-tickets dedies, pas sur le ticket audit large
+- Les dependances sont plus fines et reviewables
+
 ## Step 5 - Dev (code)
 Where to run: EACH WORK REPO
 Ordre recommande: Spring -> Python -> Angular
 
 Exemple de prompt (a adapter au repo):
 ```txt
-Sur le ticket local INIT-002-<repo>-..., execute la phase Dev.
+Sur le sous-ticket local <SUB-TICKET-ID>, execute la phase Dev.
 - respecter strictement le scope local
 - Context7 seulement si Required=Yes
 - produire changements + tests + resume validation
@@ -139,7 +167,7 @@ Where to run: EACH WORK REPO
 
 Exemple de prompt:
 ```txt
-Lance le review gate BMAD (code-review) pour le ticket <TICKET-ID>.
+Lance le review gate BMAD (code-review) pour le sous-ticket <SUB-TICKET-ID>.
 Je veux findings critiques/non critiques + decision finale.
 ```
 
@@ -163,5 +191,5 @@ Sinon laisse Active avec blockers explicites.
 
 ## Resume: qui declenche quoi
 - Toi (manuel): lancement step 0/1, validations intermediaires, go/no-go Architect et Dev.
-- Orchestrateur (automatique quand demande): creation/maj INIT+CP+tickets et coherence metadata.
+- Orchestrateur (automatique quand demande): creation/maj INIT+CP+tickets, expansion audit->sous-tickets, coherence metadata.
 - Agents code (manuel par repo): Architect, Dev, Reviewer en local.

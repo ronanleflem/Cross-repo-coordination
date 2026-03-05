@@ -71,6 +71,27 @@ Optional command:
 
 ---
 
+## Step 2.5 - Expand audit tickets into implementation sub-tickets
+Where to run: CROSS-REPO
+File used: docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md
+
+Prompt template:
+```txt
+Applique docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md.
+
+Initiative: INIT-<XXX>
+
+Actions attendues:
+1) Lire INIT + CP + tickets audit Angular/Spring/Python
+2) Generer les sous-tickets techniques necessaires dans chaque repo
+3) Fixer BMAD Stage = PM dans chaque sous-ticket
+4) Renseigner Cross-Repo Initiative, Upstream Dependencies, Contract Version, Context7 Decision
+5) Mettre a jour INIT + CP (liste sous-tickets + dependency graph + ordre final)
+6) Stopper et me demander validation avant Dev
+```
+
+---
+
 ## Step 3 - Start implementation in one repo
 Where to run: REPO DE TRAVAIL (Angular OR Spring OR Python)
 

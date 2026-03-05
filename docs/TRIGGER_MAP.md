@@ -7,6 +7,11 @@ This file defines which markdown files must be triggered for each input type.
 - Scope: cross-repo orchestration
 - Outputs: `INIT`, `CP`, local tickets list, dependency graph
 
+## Audit expansion entry point (when audit tickets already exist)
+- Trigger: `docs/PROMPT_EXPLODE_AUDIT_TO_SUBTICKETS.md`
+- Scope: cross-repo expansion of audit findings into implementation sub-tickets
+- Outputs: updated `INIT`, updated `CP`, generated sub-ticket paths, refined dependency graph
+
 ## Input type mapping
 
 ### Case A: vague idea / jira-like sentence
@@ -29,6 +34,10 @@ For each local ticket:
 2. Architect stage
 3. Dev stage
 4. Reviewer stage
+
+For audit-expansion sub-tickets:
+1. Generate sub-ticket with PM stage
+2. Run Architect/Dev/Reviewer on each generated sub-ticket
 
 ## Context7 triggering
 Context7 can be used only when at least one is true:
